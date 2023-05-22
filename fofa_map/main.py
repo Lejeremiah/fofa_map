@@ -9,11 +9,8 @@ from library.utils.download import Downloader
 from library.utils.keywordsHandler import KeywordsHandler
 from library.utils.contentsHandler import ContentsHandler
 
-
-
-
-
-
+import library.utils.log
+import logging
 
 # keyword_handler.handle_by_nologin('''
 # protocol=="socks5" &&
@@ -41,6 +38,7 @@ def run():
         ''', i)
         content = downloader(url)
         contents_handler.get_contents_by_cssselect(content)
-
+        logging.info("%s"%str(i))
+    
 if __name__ == '__main__':
     run()
