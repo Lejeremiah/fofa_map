@@ -10,9 +10,7 @@ from library.utils.keywordsHandler import KeywordsHandler
 from library.utils.contentsHandler import ContentsHandler
 
 
-downloader = Downloader()
-keyword_handler = KeywordsHandler()
-contents_handler = ContentsHandler()
+
 
 
 
@@ -30,13 +28,19 @@ contents_handler = ContentsHandler()
 #     status_code="200"
 #     ''',i)
 
-for i in range(5):
-    url = keyword_handler.handle_by_nologin('''
-    protocol=="socks5" &&
-    "Version:5" &&
-    "Method:No Authentication(0x00)" &&
-    country="CN"
-    ''', i)
-    content = downloader(url)
-    contents_handler.get_contents_by_cssselect(content)
+def run():
+    downloader = Downloader()
+    keyword_handler = KeywordsHandler()
+    contents_handler = ContentsHandler()
+    for i in range(5):
+        url = keyword_handler.handle_by_nologin('''
+        protocol=="socks5" &&
+        "Version:5" &&
+        "Method:No Authentication(0x00)" &&
+        country="CN"
+        ''', i)
+        content = downloader(url)
+        contents_handler.get_contents_by_cssselect(content)
 
+if __name__ == '__main__':
+    run()
