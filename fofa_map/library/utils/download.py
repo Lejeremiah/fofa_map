@@ -4,7 +4,7 @@ import datetime
 import random
 
 import requests
-
+import logging
 
 '''
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36
@@ -43,7 +43,11 @@ class Downloader():
     def __call__(self,url):
         '''
         :param url: download url
-        :return: {'html':html,'code':code}
+        :return: {
+            'url': url,
+            'html':html,
+            'code':code,
+            }
         '''
 
 
@@ -66,7 +70,8 @@ class Downloader():
         return result
 
     def download(self,url,headers,proxy=None,num_retries=2):
-        print("Downloading:",url)
+        # print("Downloading:",url)
+        logging.info("Downloading:"+url)
 
         if proxy:
             proxies = {
@@ -81,14 +86,21 @@ class Downloader():
             html = response.text
             code = response.status_code
             if 500 <= code < 600 and num_retries > 0:
-                print("Download Error:",url)
+                # print("Download Error:",url)
+                logging.error("Download Error:"+url)
                 result = self.download(url=url,headers=headers,proxy=proxy,num_retries=num_retries - 1)
                 return result
         except requests.exceptions as e:
-            print("Download Error:",e.reason)
+            # print("Download Error:",e.reason)
+            logging.error("Download Error:"+e.reason)
             html = None
             code = None
-        return {'html':html, 'code':code}
+            url = None
+        return {
+            'url':url,
+            'html':html,
+            'code':code
+        }
 
 
 
